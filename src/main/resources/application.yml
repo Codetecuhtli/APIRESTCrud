@@ -1,0 +1,19 @@
+spring:
+  profiles:
+    active:
+    - local
+---
+spring:
+  profiles: local
+  datasource:
+    url: jdbc:postgresql://localhost:5432/people
+    username: codetecuhtli
+    password: mysecretpassword
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        temp:
+          use_jdbc_metadata_defaults: false

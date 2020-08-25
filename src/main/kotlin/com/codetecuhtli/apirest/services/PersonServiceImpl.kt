@@ -16,23 +16,26 @@ class PersonServiceImpl: PersonService {
     private lateinit var personRepository: PersonRepository
 
     override fun getAllPeople(): List<Person> {
-        return personRepository.people()
+        return personRepository.findAll().map { it.toPerson() }
     }
 
     override fun getPersonById(id: Long): Person {
-        return personRepository.findPersonById(id) ?: throw NotFoundException()
+        return personRepository.findPersonEntityById(id)?.toPerson() ?: throw NotFoundException()
     }
 
     override fun createPerson(person: Person) {
-        personRepository.createPerson(person)
+        personRepository.save(person.toPersonEntity())
     }
 
     override fun updatePerson(id: Long, person: Person): Person {
-        return personRepository.updatePerson(id, person) ?: throw NotFoundException(key = Messages.UPDATE_NOT_FOUND_KEY)
+        val personFound = personRepository.findPersonEntityById(id) ?: throw NotFoundException(key = Messages.UPDATE_NOT_FOUND_KEY)
+        personFound.name = person.name!!
+        personFound.phone = person.phone!!
+        return personRepository.save(personFound).toPerson()
     }
 
     override fun deletePersonById(id: Long) {
-        personRepository.deletePersonById(id)
+        personRepository.deleteById(id)
     }
 
 }
