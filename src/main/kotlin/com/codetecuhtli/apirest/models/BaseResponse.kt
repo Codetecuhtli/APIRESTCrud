@@ -1,3 +1,3 @@
 package com.codetecuhtli.apirest.models
 
-open class BaseResponse(var error: String? = null)
+class BaseResponse(var error: String? = null)
